@@ -1,7 +1,7 @@
 package com.bets.Bets.Models;
 public class BetModel {
     private Long id;
-    private String name;
+    private Integer numbergain;
     private String Status;
     public BetModel() {
     }
@@ -11,20 +11,17 @@ public class BetModel {
     public void setStatus(String status) {
         this.Status = status;
     }
-    public BetModel(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public Integer getNumbergain() {
+        return numbergain;
     }
-    public void setName(String name) {
-        this.name = name;
-    }  
+    public void setNumbergain(Integer numbergain) {
+        this.numbergain = numbergain;
+    }
+    
 }
