@@ -21,9 +21,9 @@ apuesta
  * http://localhost:8080/bet/register
  * Method: POST - Headers
  * Keys: idbet -> Id de la apuesta
-         iduser -> Id del usuario a apostar
-         color -> Color a apostar
-         credit -> Credito a apostar
+         , iduser -> Id del usuario a apostar
+         , color -> Color a apostar
+         , credit -> Credito a apostar
 4. Endpoint de cierre apuestas dado un id de ruleta, este endpoint debe devolver el
 resultado de las apuestas hechas desde su apertura hasta el cierre.
 El número ganador se debe seleccionar automáticamente por la aplicación al cerrar
