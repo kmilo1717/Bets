@@ -14,6 +14,7 @@ public class IndividualbetMapper implements RowMapper<IndivudualBetModel>{
         Bet.setStatus(rs.getString("status"));
         Bet.setName(rs.getString("name"));
         Bet.setColor(rs.getString("color"));
+        Bet.setCreated_at(rs.getString("created_at"));
         
         return Bet;
     }

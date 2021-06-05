@@ -1,4 +1,5 @@
 package com.bets.Bets.Models;
+import com.bets.Bets.Services.BetServices;
 public class IndivudualBetModel {
     private Long idbet;
     private Long iduser;
@@ -8,6 +9,7 @@ public class IndivudualBetModel {
     private String status;
     private Integer gain;
     private String name;
+    private String created_at;
     public IndivudualBetModel() {
     }
     public Integer getNumber() {
@@ -65,5 +67,28 @@ public class IndivudualBetModel {
     }
     public void setColor(String color) {
         this.color = color;
+    }
+    public String getCreated_at() {
+        return created_at;
+    }
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+    public boolean validatedata() {
+        try {
+            if (getIduser() == null || BetServices.isNumeric(getIduser().toString())
+                    || BetServices.isNumeric(getIdbet().toString()) || getIdbet() == null
+                    || getCredit() == null || BetServices.isNumeric(getCredit().toString())
+                    || getCredit() > 10000 || getNumber() < -1 || getNumber() > 36) {
+
+                return false;
+            } else {
+
+                return true;
+            }
+        } catch (Exception e) {
+
+            return false;
+        }
     }  
 }

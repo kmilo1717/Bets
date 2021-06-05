@@ -11,7 +11,7 @@ public class BetRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
     public List<BetModel> getidcreated() {
-        jdbcTemplate.update("INSERT INTO bets VALUES (?,?, default)", null, "unable");
+        jdbcTemplate.update("INSERT INTO bets VALUES (?,?, default, default, default)", null, "unable");
         List<BetModel> Last = jdbcTemplate.query("SELECT * FROM bets ORDER BY id DESC LIMIT 1", new BetMapper());
 
         return Last;
@@ -29,7 +29,7 @@ public class BetRepository {
     }
     public String makebet(IndivudualBetModel datarequest) {
         try {
-            jdbcTemplate.update("INSERT INTO individualbet VALUES (?,?,?,?,?, default, default)",
+            jdbcTemplate.update("INSERT INTO individualbet VALUES (?,?,?,?,?, default, default, default)",
                     datarequest.getIdbet(), datarequest.getIduser(), datarequest.getCredit(), datarequest.getColor(),
                     datarequest.getNumber());
 
@@ -41,17 +41,20 @@ public class BetRepository {
     }
     public List<IndivudualBetModel> closebet(Integer randomnumber, String Color, Long idbet) {
         List<BetModel> validate = jdbcTemplate.query("SELECT * FROM bets WHERE id=?", new BetMapper(), idbet);
-        if (validate.get(0).getStatus()=="enabled") {
+            if(validate.get(0).getStatus().equals("enabled")){
             jdbcTemplate.update("UPDATE bets SET status='closed', numbergain=? WHERE id=?", randomnumber, idbet);
             jdbcTemplate.update("UPDATE individualbet SET status='sin ganancia' WHERE number<>? AND color<>?",
                     randomnumber, Color);
             jdbcTemplate.update("UPDATE individualbet SET gain= credit*1.8, status='ganador' WHERE color=?", Color);
             jdbcTemplate.update("UPDATE individualbet SET gain= credit*5, status='ganador' WHERE number=?",
                     randomnumber);
-        }
+            }
 
         return jdbcTemplate.query("SELECT * FROM individualbet INNER JOIN users ON iduser=id WHERE idbet=?",
                 new IndividualbetMapper(), idbet);
+    }
+    public List<BetModel> getallbet() {
+        return jdbcTemplate.query("SELECT * FROM bets", new BetMapper());
     }
 
 }

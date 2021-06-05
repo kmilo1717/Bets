@@ -1,5 +1,8 @@
 package com.bets.Bets.Cotrollers;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.bets.Bets.Models.BetModel;
 import com.bets.Bets.Models.IndivudualBetModel;
 import com.bets.Bets.Respositories.BetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.bets.Bets.Services.Validdate;
+import com.bets.Bets.Services.BetServices;
 @RestController
 @RequestMapping("/bet")
 public class BetController {
@@ -23,7 +26,7 @@ public class BetController {
     @GetMapping(path = "/{id}")
     public String activatebetgeneral(@PathVariable("id") String id) {
         try {
-            if (id == null || Validdate.isNumeric(id.toString())) {
+            if (id == null || BetServices.isNumeric(id.toString())) {
 
                 return "Operacion Fallida";
 
@@ -46,7 +49,7 @@ public class BetController {
             datarequest.setNumber(number);
             datarequest.setCredit(credit);
             datarequest.setColor(color);
-            if (validatedata(datarequest)) {
+            if (datarequest.validatedata()) {
 
                 return betRepository.makebet(datarequest);
             } else {
@@ -62,40 +65,14 @@ public class BetController {
     @GetMapping(path = "/close/{id}")
     public ArrayList<IndivudualBetModel> closebetgeneral(@PathVariable Long id) {
         int randomvalue = (int) (Math.random() * 37);
-        String color = getcolorvaluerandom(randomvalue);
+        String color = BetServices.getcolorvaluerandom(randomvalue);
         ArrayList<IndivudualBetModel> datafinal= new ArrayList<IndivudualBetModel>();
         datafinal.addAll(betRepository.closebet(randomvalue, color, id));
 
         return datafinal;
     }
-    private boolean validatedata(IndivudualBetModel data) {
-        try {
-            if (data.getIduser() == null || Validdate.isNumeric(data.getIduser().toString())
-                    || Validdate.isNumeric(data.getIdbet().toString()) || data.getIdbet() == null
-                    || data.getCredit() == null || Validdate.isNumeric(data.getCredit().toString())
-                    || data.getCredit() > 10000 || data.getNumber() < -1 || data.getNumber() > 36) {
-
-                return false;
-            } else {
-
-                return true;
-            }
-        } catch (Exception e) {
-
-            return false;
-        }
-    }
-    private String getcolorvaluerandom(int randomvalue) {
-        try {
-            if (randomvalue % 2 == 0) {
-                return "rojo";
-            } else {
-
-                return "negro";
-            }
-        } catch (Exception e) {
-            
-            return "Operacion Fallida";
-        }
+    @GetMapping(path = "/getall")
+    public List<BetModel> getAllbet() {
+        return betRepository.getallbet();
     }
 }
